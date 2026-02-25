@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jonathan Sanderson — IT Professional</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Fira+Code:wght@300;400;500&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #dff0f7;
+      --bg2: #cce6f2;
+      --surface: #ffffff;
+      --surface2: #eef7fc;
+      --border: #b0d8ec;
+      --accent: #0077aa;
+      --accent2: #e05c2a;
+      --accent3: #00a896;
+      --text: #1a2e38;
+      --muted: #5a7a8a;
+      --shadow: rgba(0, 100, 150, 0.12);
+      --heading-font: 'Playfair Display', serif;
+      --mono-font: 'Fira Code', monospace;
+      --body-font: 'Nunito', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body-font);
+      font-weight: 400;
+      min-height: 100vh;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom cursor */
+    #cursor {
+      width: 12px; height: 12px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s ease, background 0.2s;
+      transform: translate(-50%, -50%);
+    }
+    #cursor-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--accent);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transition: width 0.2s, height 0.2s, opacity 0.2s;
+      transform: translate(-50%, -50%);
+      opacity: 0.5;
+    }
+    body.hovering #cursor { transform: translate(-50%, -50%) scale(2.5); background: var(--accent2); }
+    body.hovering #cursor-ring { width: 60px; height: 60px; opacity: 0.2; }
+
+    /* Animated background blobs */
+    .bg-blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: 0;
+      animation: blobFloat 12s ease-in-out infinite alternate;
+    }
+    .blob1 { width: 420px; height: 420px; background: #a8d8ea; top: -120px; left: -120px; animation-delay: 0s; }
+    .blob2 { width: 320px; height: 320px; background: #b8e0d2; top: 40%; right: -100px; animation-delay: -4s; }
+    .blob3 { width: 260px; height: 260px; background: #d4e9f7; bottom: 8%; left: 20%; animation-delay: -8s; }
+
+    @keyframes blobFloat {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(30px, 20px) scale(1.08); }
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 60px 30px 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: start;
+      background: var(--surface);
+      border-radius: 22px;
+      padding: 48px 48px 36px;
+      margin-bottom: 28px;
+      box-shadow: 0 8px 40px var(--shadow);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      animation: slideIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s forwards;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--accent), var(--accent3), var(--accent2));
+    }
+
+    .eyebrow {
+      font-family: var(--mono-font);
+      font-size: 11px;
+      color: var(--accent3);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .eyebrow::before { content: '//'; color: var(--border); }
+
+    h1 {
+      font-family: var(--heading-font);
+      font-size: clamp(42px, 7vw, 78px);
+      line-height: 1;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    h1 em { font-style: italic; color: var(--accent); }
+
+    .tagline {
+      font-family: var(--mono-font);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .available-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #e6f9f6;
+      border: 1px solid #a0ddd2;
+      padding: 9px 18px;
+      border-radius: 999px;
+      font-family: var(--mono-font);
+      font-size: 11px;
+      color: var(--accent3);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .pulse-dot {
+      width: 8px; height: 8px;
+      background: var(--accent3);
+      border-radius: 50%;
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0,168,150,0.4); }
+      50% { box-shadow: 0 0 0 8px rgba(0,168,150,0); }
+    }
+
+    .contact-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 24px;
+      padding-top: 22px;
+      border-top: 1px solid var(--bg2);
+      grid-column: 1 / -1;
+    }
+
+    .contact-chip {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-family: var(--mono-font);
+      font-size: 11px;
+      color: var(--muted);
+      transition: all 0.22s cubic-bezier(0.22,1,0.36,1);
+      cursor: pointer;
+    }
+
+    .contact-chip:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0,119,170,0.25);
+    }
+
+    /* ── SECTIONS ── */
+    .section-wrap {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 36px 40px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 24px var(--shadow);
+      border: 1px solid var(--border);
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .section-wrap.visible { opacity: 1; transform: translateY(0); }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .section-header:hover .section-title { color: var(--accent); }
+
+    .section-icon {
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .icon-exp    { background: #e4f2fb; }
+    .icon-edu    { background: #e4f8f5; }
+    .icon-skills { background: #fdeee7; }
+
+    .section-title {
+      font-family: var(--heading-font);
+      font-size: 26px;
+      color: var(--text);
+      flex: 1;
+      transition: color 0.2s;
+    }
+
+    .section-count {
+      font-family: var(--mono-font);
+      font-size: 11px;
+      color: var(--muted);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    .chevron {
+      font-size: 18px;
+      color: var(--muted);
+      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+    }
+
+    .section-wrap.collapsed .chevron { transform: rotate(-90deg); }
+
+    .section-body {
+      overflow: hidden;
+      transition: max-height 0.55s cubic-bezier(0.22,1,0.36,1), opacity 0.4s;
+      max-height: 2000px;
+      opacity: 1;
+    }
+
+    .section-wrap.collapsed .section-body { max-height: 0; opacity: 0; }
+
+    /* ── EXPERIENCE CARDS ── */
+    .exp-card {
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 24px;
+      margin-bottom: 14px;
+      background: var(--surface2);
+      position: relative;
+      transition: box-shadow 0.25s, transform 0.25s, border-color 0.25s;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .exp-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, var(--accent), var(--accent3));
+      border-radius: 4px 0 0 4px;
+      transition: width 0.25s;
+    }
+
+    .exp-card:hover { box-shadow: 0 8px 30px var(--shadow); transform: translateY(-3px); border-color: var(--accent); }
+    .exp-card:hover::before { width: 7px; }
+
+    .exp-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .exp-title { font-family: var(--heading-font); font-size: 20px; color: var(--text); }
+
+    .exp-date {
+      font-family: var(--mono-font);
+      font-size: 11px;
+      color: var(--accent);
+      background: rgba(0,119,170,0.08);
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,119,170,0.2);
+      white-space: nowrap;
+    }
+
+    .exp-company { font-family: var(--mono-font); font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+    .exp-company strong { color: var(--accent2); font-weight: 500; }
+
+    .expand-hint {
+      font-family: var(--mono-font);
+      font-size: 10px;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: opacity 0.2s;
+    }
+
+    .exp-card.open .expand-hint { opacity: 0; height: 0; overflow: hidden; }
+
+    .exp-bullets {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.45s ease, opacity 0.35s;
+    }
+
+    .exp-card.open .exp-bullets { max-height: 300px; opacity: 1; }
+
+    .exp-bullets ul {
+      list-style: none;
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .exp-bullets li {
+      font-size: 14px;
+      color: var(--muted);
+      padding-left: 18px;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    .exp-bullets li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--accent3);
+      font-size: 11px;
+      top: 3px;
+    }
+
+    /* ── EDUCATION ── */
+    .edu-card {
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 24px;
+      margin-bottom: 14px;
+      background: var(--surface2);
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.25s, transform 0.25s;
+    }
+
+    .edu-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, var(--accent3), #00c4a7);
+      border-radius: 4px 0 0 4px;
+    }
+
+    .edu-card:hover { box-shadow: 0 8px 30px var(--shadow); transform: translateY(-3px); }
+
+    .edu-degree { font-family: var(--heading-font); font-size: 20px; color: var(--text); margin-bottom: 4px; }
+    .edu-school { font-family: var(--mono-font); font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+
+    .cert-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .cert-badge {
+      font-family: var(--mono-font);
+      font-size: 10px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,168,150,0.3);
+      color: var(--accent3);
+      background: rgba(0,168,150,0.07);
+      cursor: default;
+      transition: all 0.2s;
+    }
+
+    .cert-badge:hover { background: var(--accent3); color: #fff; border-color: var(--accent3); transform: scale(1.05); }
+
+    /* ── SKILLS ── */
+    .skills-filter {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .filter-btn {
+      font-family: var(--mono-font);
+      font-size: 11px;
+      padding: 7px 18px;
+      border-radius: 999px;
+      border: 1.5px solid var(--border);
+      background: var(--surface2);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.22s;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0,119,170,0.2);
+    }
+
+    .skills-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .skill-tag {
+      font-family: var(--mono-font);
+      font-size: 12px;
+      padding: 9px 18px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      color: var(--muted);
+      background: var(--surface2);
+      cursor: default;
+      transition: all 0.22s cubic-bezier(0.22,1,0.36,1);
+    }
+
+    .skill-tag[data-level="core"] {
+      border-color: rgba(0,119,170,0.35);
+      color: var(--accent);
+      background: rgba(0,119,170,0.06);
+    }
+
+    .skill-tag:hover {
+      color: #fff;
+      background: var(--accent);
+      border-color: var(--accent);
+      transform: translateY(-3px) scale(1.04);
+      box-shadow: 0 6px 18px rgba(0,119,170,0.2);
+    }
+
+    .skill-tag.hidden { display: none; }
+
+    /* Progress bars */
+    .skill-bars { border-top: 1px solid var(--border); padding-top: 24px; }
+
+    .bar-row { margin-bottom: 16px; }
+
+    .bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono-font);
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .bar-track {
+      height: 6px;
+      background: var(--bg2);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent3));
+      width: 0;
+      transition: width 1.3s cubic-bezier(0.22,1,0.36,1);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding-top: 16px;
+      font-family: var(--mono-font);
+      font-size: 11px;
+      color: var(--muted);
+      opacity: 0;
+      animation: slideIn 0.6s ease 1.2s forwards;
+    }
+    footer span { color: var(--accent2); }
+
+    /* Ripple */
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(0,119,170,0.12);
+      transform: scale(0);
+      animation: ripple 0.65s ease-out forwards;
+      pointer-events: none;
+    }
+    @keyframes ripple { to { transform: scale(5); opacity: 0; } }
+
+    /* Animations */
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Tooltip */
+    [data-tooltip] { position: relative; }
+    [data-tooltip]::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      background: var(--text);
+      color: #fff;
+      font-family: var(--mono-font);
+      font-size: 10px;
+      padding: 5px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s;
+      z-index: 100;
+    }
+    [data-tooltip]:hover::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 600px) {
+      header { grid-template-columns: 1fr; }
+      .container { padding: 30px 16px 60px; }
+      .section-wrap { padding: 24px 20px; }
+      body { cursor: auto; }
+      #cursor, #cursor-ring { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+
+  <div class="bg-blob blob1"></div>
+  <div class="bg-blob blob2"></div>
+  <div class="bg-blob blob3"></div>
+
+  <div class="container">
+
+    <!-- HEADER -->
+    <header>
+      <div class="header-left">
+        <div class="eyebrow">IT Professional &amp; Network Specialist</div>
+        <h1>Jonathan <em>Sanderson</em></h1>
+        <div class="tagline">// Monroe, LA &nbsp;·&nbsp; Open to opportunities</div>
+      </div>
+      <div>
+        <div class="available-pill">
+          <div class="pulse-dot"></div>
+          Available for hire
+        </div>
+      </div>
+      <div class="contact-strip">
+        <div class="contact-chip" data-tooltip="Call me" onclick="window.location='tel:3187891325'">
+          📞 &nbsp;318-789-1325
+        </div>
+        <div class="contact-chip" data-tooltip="Send email" onclick="window.location='mailto:jonathansanderson96@gmail.com'">
+          ✉️ &nbsp;jonathansanderson96@gmail.com
+        </div>
+        <div class="contact-chip" data-tooltip="Location">
+          📍 &nbsp;Monroe, LA
+        </div>
+      </div>
+    </header>
+
+    <!-- EXPERIENCE -->
+    <div class="section-wrap" id="sec-exp">
+      <div class="section-header" onclick="toggleSection('sec-exp')">
+        <div class="section-icon icon-exp">💼</div>
+        <div class="section-title">Experience</div>
+        <div class="section-count">2 roles</div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="section-body">
+
+        <div class="exp-card" onclick="toggleCard(this, event)">
+          <div class="exp-top">
+            <div class="exp-title">Mobile Device Repair Technician</div>
+            <div class="exp-date">08/2024 – Present</div>
+          </div>
+          <div class="exp-company"><strong>Asurion / uBreakiFix</strong> &nbsp;·&nbsp; Monroe, LA</div>
+          <div class="expand-hint">▸ Click to expand responsibilities</div>
+          <div class="exp-bullets">
+            <ul>
+              <li>Repair various iPhone and Samsung devices</li>
+              <li>Contact customers for appointments and answer questions</li>
+              <li>Scan and maintain inventory of phone parts</li>
+              <li>Calibrate iPhone screens to manufacturer specifications</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="exp-card" onclick="toggleCard(this, event)">
+          <div class="exp-top">
+            <div class="exp-title">Package Handler</div>
+            <div class="exp-date">02/2022 – 12/2023</div>
+          </div>
+          <div class="exp-company"><strong>FedEx Ground</strong> &nbsp;·&nbsp; Monroe, LA</div>
+          <div class="expand-hint">▸ Click to expand responsibilities</div>
+          <div class="exp-bullets">
+            <ul>
+              <li>Used scanners to track parcel information, condition, and receipt</li>
+              <li>Ensured accurate and timely processing of packages</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- EDUCATION -->
+    <div class="section-wrap" id="sec-edu">
+      <div class="section-header" onclick="toggleSection('sec-edu')">
+        <div class="section-icon icon-edu">🎓</div>
+        <div class="section-title">Education</div>
+        <div class="section-count">2 schools</div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="section-body">
+
+        <div class="edu-card">
+          <div class="edu-degree">Information Technology</div>
+          <div class="edu-school">Louisiana Delta Community College &nbsp;·&nbsp; Monroe, LA &nbsp;·&nbsp; Graduating 05/2025</div>
+          <div class="cert-grid">
+            <div class="cert-badge" data-tooltip="Industry certification">TestOut IT Fundamentals Pro</div>
+            <div class="cert-badge" data-tooltip="Industry certification">TestOut Linux Pro</div>
+            <div class="cert-badge" data-tooltip="Industry certification">TestOut Network Pro</div>
+            <div class="cert-badge" data-tooltip="Course certificate">Professional Communication</div>
+          </div>
+        </div>
+
+        <div class="edu-card">
+          <div class="edu-degree">High School Diploma</div>
+          <div class="edu-school">Ouachita Parish High School &nbsp;·&nbsp; Monroe, LA &nbsp;·&nbsp; 05/2019</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SKILLS -->
+    <div class="section-wrap" id="sec-skills">
+      <div class="section-header" onclick="toggleSection('sec-skills')">
+        <div class="section-icon icon-skills">⚡</div>
+        <div class="section-title">Skills</div>
+        <div class="section-count">12 skills</div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="section-body">
+
+        <div class="skills-filter">
+          <button class="filter-btn active" onclick="filterSkills('all', this)">All</button>
+          <button class="filter-btn" onclick="filterSkills('networking', this)">Networking</button>
+          <button class="filter-btn" onclick="filterSkills('tech', this)">Technical</button>
+          <button class="filter-btn" onclick="filterSkills('soft', this)">Soft Skills</button>
+        </div>
+
+        <div class="skills-grid">
+          <div class="skill-tag" data-level="core" data-cat="networking" data-tooltip="Core strength">Network Security</div>
+          <div class="skill-tag" data-level="core" data-cat="networking" data-tooltip="Core strength">Network Troubleshooting</div>
+          <div class="skill-tag" data-level="core" data-cat="networking" data-tooltip="Core strength">Network Configuration</div>
+          <div class="skill-tag" data-level="core" data-cat="networking" data-tooltip="Core strength">Network Management</div>
+          <div class="skill-tag" data-level="core" data-cat="networking" data-tooltip="Core strength">Network Hardware</div>
+          <div class="skill-tag" data-cat="tech" data-tooltip="Entry level">Python</div>
+          <div class="skill-tag" data-cat="tech" data-tooltip="Proficient">Microsoft Office</div>
+          <div class="skill-tag" data-cat="tech" data-tooltip="Proficient">Computer Literacy</div>
+          <div class="skill-tag" data-cat="tech" data-tooltip="Proficient">Typing</div>
+          <div class="skill-tag" data-cat="soft" data-tooltip="Personal strength">Critical Thinking</div>
+          <div class="skill-tag" data-cat="soft" data-tooltip="Personal strength">Efficient Learner</div>
+          <div class="skill-tag" data-cat="soft" data-tooltip="Personal strength">Hardworking</div>
+        </div>
+
+        <div class="skill-bars" id="skill-bars"></div>
+
+      </div>
+    </div>
+
+    <footer>Jonathan Sanderson &copy; 2025 &nbsp;·&nbsp; <span>jonathansanderson96@gmail.com</span></footer>
+
+  </div>
+
+  <script>
+    // ── Custom cursor ──
+    const cursor = document.getElementById('cursor');
+    const ring   = document.getElementById('cursor-ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top  = my + 'px';
+    });
+
+    (function animateRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(animateRing);
+    })();
+
+    document.querySelectorAll('button, .exp-card, .contact-chip, .cert-badge, .skill-tag, .section-header, .filter-btn').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+    });
+
+    // ── Scroll reveal ──
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          if (e.target.id === 'sec-skills') renderBars();
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.section-wrap').forEach(el => observer.observe(el));
+
+    // ── Toggle sections ──
+    function toggleSection(id) {
+      document.getElementById(id).classList.toggle('collapsed');
+    }
+
+    // ── Toggle experience cards ──
+    function toggleCard(card, event) {
+      const wasOpen = card.classList.contains('open');
+      document.querySelectorAll('.exp-card.open').forEach(c => c.classList.remove('open'));
+      if (!wasOpen) {
+        card.classList.add('open');
+        // Ripple effect
+        const rect = card.getBoundingClientRect();
+        const r = document.createElement('span');
+        r.className = 'ripple';
+        const size = Math.max(rect.width, rect.height);
+        r.style.cssText = `width:${size}px;height:${size}px;left:${event.clientX - rect.left - size/2}px;top:${event.clientY - rect.top - size/2}px`;
+        card.appendChild(r);
+        r.addEventListener('animationend', () => r.remove());
+      }
+    }
+
+    // ── Skill filter ──
+    function filterSkills(cat, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.skill-tag').forEach(tag => {
+        tag.classList.toggle('hidden', cat !== 'all' && tag.dataset.cat !== cat);
+      });
+    }
+
+    // ── Skill progress bars ──
+    const bars = [
+      { label: 'Networking & Security', pct: 85 },
+      { label: 'Hardware / Device Repair', pct: 78 },
+      { label: 'Linux & OS Fundamentals', pct: 68 },
+      { label: 'Python / Scripting', pct: 35 },
+    ];
+
+    let barsRendered = false;
+    function renderBars() {
+      if (barsRendered) return;
+      barsRendered = true;
+      const wrap = document.getElementById('skill-bars');
+      wrap.innerHTML = bars.map(b => `
+        <div class="bar-row">
+          <div class="bar-label"><span>${b.label}</span><span>${b.pct}%</span></div>
+          <div class="bar-track"><div class="bar-fill" data-pct="${b.pct}"></div></div>
+        </div>
+      `).join('');
+      setTimeout(() => {
+        document.querySelectorAll('.bar-fill').forEach(f => {
+          f.style.width = f.dataset.pct + '%';
+        });
+      }, 150);
+    }
+  </script>
+</body>
+</html>
