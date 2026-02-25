@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jonathan Sanderson — IT Professional</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --border: #1e1e1e;
+      --accent: #00e5ff;
+      --accent2: #ff6b35;
+      --text: #e8e8e8;
+      --muted: #666;
+      --heading-font: 'Bebas Neue', sans-serif;
+      --mono-font: 'DM Mono', monospace;
+      --body-font: 'DM Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body-font);
+      font-weight: 300;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 30px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 40px;
+      margin-bottom: 50px;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .tag {
+      font-family: var(--mono-font);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tag::before {
+      content: '';
+      width: 20px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-family: var(--heading-font);
+      font-size: clamp(56px, 10vw, 100px);
+      line-height: 0.9;
+      letter-spacing: 2px;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    h1 span {
+      color: var(--accent);
+      display: block;
+    }
+
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .contact-item {
+      font-family: var(--mono-font);
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+
+    .contact-item:hover { color: var(--accent); }
+
+    .contact-item .dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent2);
+    }
+
+    /* Sections */
+    section {
+      margin-bottom: 50px;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    section:nth-child(2) { animation-delay: 0.1s; }
+    section:nth-child(3) { animation-delay: 0.2s; }
+    section:nth-child(4) { animation-delay: 0.3s; }
+
+    .section-label {
+      font-family: var(--heading-font);
+      font-size: 13px;
+      letter-spacing: 5px;
+      color: var(--accent2);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Experience cards */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      position: relative;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .card:hover {
+      border-left-color: var(--accent2);
+      transform: translateX(4px);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .job-title {
+      font-family: var(--heading-font);
+      font-size: 22px;
+      letter-spacing: 1px;
+      color: #fff;
+    }
+
+    .job-date {
+      font-family: var(--mono-font);
+      font-size: 11px;
+      color: var(--accent);
+      background: rgba(0,229,255,0.08);
+      padding: 4px 10px;
+      border: 1px solid rgba(0,229,255,0.2);
+    }
+
+    .company {
+      font-family: var(--mono-font);
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .company span {
+      color: var(--accent2);
+    }
+
+    .card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .card ul li {
+      font-size: 14px;
+      color: #aaa;
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .card ul li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    /* Education */
+    .edu-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent2);
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      transition: transform 0.2s;
+    }
+
+    .edu-card:hover { transform: translateX(4px); }
+
+    .degree {
+      font-family: var(--heading-font);
+      font-size: 22px;
+      letter-spacing: 1px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .school {
+      font-family: var(--mono-font);
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .certs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .cert-badge {
+      font-family: var(--mono-font);
+      font-size: 10px;
+      padding: 5px 10px;
+      border: 1px solid rgba(255,107,53,0.3);
+      color: var(--accent2);
+      background: rgba(255,107,53,0.06);
+      letter-spacing: 0.5px;
+    }
+
+    /* Skills */
+    .skills-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .skill {
+      font-family: var(--mono-font);
+      font-size: 12px;
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: var(--surface);
+      transition: all 0.2s;
+      cursor: default;
+    }
+
+    .skill:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0,229,255,0.05);
+    }
+
+    .skill.highlight {
+      border-color: rgba(0,229,255,0.3);
+      color: var(--text);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      margin-top: 20px;
+      font-family: var(--mono-font);
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <header>
+      <div class="tag">Resume / Portfolio</div>
+      <h1>Jonathan<span>Sanderson</span></h1>
+      <div class="contact-row">
+        <div class="contact-item"><span class="dot"></span> 318-789-1325</div>
+        <div class="contact-item"><span class="dot"></span> jonathansanderson96@gmail.com</div>
+        <div class="contact-item"><span class="dot"></span> Monroe, LA</div>
+      </div>
+    </header>
+
+    <!-- Experience -->
+    <section>
+      <div class="section-label">Experience</div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="job-title">Mobile Device Repair Technician</div>
+          <div class="job-date">08/2024 – Present</div>
+        </div>
+        <div class="company"><span>Asurion / uBreakiFix</span> — Monroe, LA</div>
+        <ul>
+          <li>Repair various iPhone and Samsung devices</li>
+          <li>Contact customers for appointments and answer questions</li>
+          <li>Scan and maintain inventory of phone parts</li>
+          <li>Calibrate iPhone screens</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="job-title">Package Handler</div>
+          <div class="job-date">02/2022 – 12/2023</div>
+        </div>
+        <div class="company"><span>FedEx Ground</span> — Monroe, LA</div>
+        <ul>
+          <li>Used scanners to track parcel information, condition, and receipt</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Education -->
+    <section>
+      <div class="section-label">Education</div>
+
+      <div class="edu-card">
+        <div class="degree">Information Technology</div>
+        <div class="school">Louisiana Delta Community College — Monroe, LA &nbsp;|&nbsp; Graduating 05/2025</div>
+        <div class="certs">
+          <div class="cert-badge">TestOut IT Fundamentals Pro</div>
+          <div class="cert-badge">TestOut Linux Pro</div>
+          <div class="cert-badge">TestOut Network Pro</div>
+          <div class="cert-badge">Professional Communication</div>
+        </div>
+      </div>
+
+      <div class="edu-card">
+        <div class="degree">High School Diploma</div>
+        <div class="school">Ouachita Parish High School — Monroe, LA &nbsp;|&nbsp; 05/2019</div>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section>
+      <div class="section-label">Skills</div>
+      <div class="skills-grid">
+        <div class="skill highlight">Network Security</div>
+        <div class="skill highlight">Network Troubleshooting</div>
+        <div class="skill highlight">Network Configuration</div>
+        <div class="skill highlight">Network Management</div>
+        <div class="skill highlight">Network Hardware</div>
+        <div class="skill">Python (Entry Level)</div>
+        <div class="skill">Microsoft Office</div>
+        <div class="skill">Computer Literacy</div>
+        <div class="skill">Typing</div>
+        <div class="skill">Critical Thinking</div>
+        <div class="skill">Efficient Learner</div>
+        <div class="skill">Hardworking</div>
+      </div>
+    </section>
+
+    <footer>
+      <span>Jonathan Sanderson &copy; 2025</span>
+      <span>jonathansanderson96@gmail.com</span>
+    </footer>
+
+  </div>
+</body>
+</html>
